@@ -1,0 +1,93 @@
+# GROKPIT — Default Policy (Conservative but Usable)
+#
+# This is the starting safe default. Users can override per-project
+# by placing a conductor.policy.toml (or similar) in their repo root.
+
+[general]
+# When true, the Conductor will refuse to start any task that doesn't
+# explicitly declare a workspace directory.
+require_explicit_workspace = true
+
+# Maximum number of concurrent tasks the Conductor will manage.
+max_concurrent_tasks = 3
+
+[capabilities]
+# Default capability mode for new tasks.
+# Options: "read-only", "read-write", "execute"
+default_mode = "read-write"
+
+# Paths that are always read-only, even in read-write tasks.
+# These are evaluated against the task's declared workspace.
+always_read_only = [
+  ".git",
+  "node_modules",
+  "target",
+  "dist",
+  ".env*",
+]
+
+[shell]
+# Shell commands that are pre-approved (no user prompt required).
+# Be extremely conservative here.
+allowlist = [
+  "git status",
+  "git diff",
+  "git log --oneline -10",
+  "ls",
+  "dir",           # Windows
+  "cat",
+  "type",          # Windows
+  "echo",
+  "pwd",
+  "cd",
+  "npm run build",
+  "npm test",
+  "cargo check",
+  "cargo test",
+  "cargo build",
+]
+
+# Any command matching these patterns will *always* require explicit approval.
+require_approval_patterns = [
+  "rm -rf",
+  "git push",
+  "git reset --hard",
+  "git clean -fd",
+  "sudo",
+  "del /s /q",     # Windows aggressive delete
+  "format",
+  ":(){ :|:& };:",
+]
+
+[filesystem]
+# Additional directories that are completely off-limits.
+forbidden_paths = [
+  "C:\\Windows",
+  "C:\\Program Files",
+  "/etc",
+  "/usr",
+  "/System",
+  "~/.ssh",
+  "~/.aws",
+  "~/.config/gcloud",
+]
+
+[approval]
+# How approvals are handled when a policy requires them.
+# "local_tui" = ask in the running Grok Build TUI (current default)
+# "grokpit_ui" = ask via GROKPIT status UI (future)
+# "both" = ask in both places
+mode = "local_tui"
+
+# Timeout (seconds) for an approval request before the action is denied.
+timeout_seconds = 120
+
+[logging]
+# How much detail to log for each task.
+# "summary", "actions", "full"
+level = "actions"
+
+[resource]
+# When the service has been idle (no active tasks) for this many seconds,
+# it should go into a low-resource state if the platform supports it.
+idle_threshold_seconds = 300

@@ -1,0 +1,38 @@
+# Example project-specific policy override for GROKPIT
+# Place a copy of this (renamed appropriately) in a repo root to customize behavior for that project.
+
+[general]
+require_explicit_workspace = true
+
+[capabilities]
+default_mode = "read-write"
+
+[shell]
+# This project is happy to let the agent run its normal dev scripts without approval
+allowlist = [
+  "git status",
+  "git diff",
+  "npm install",
+  "npm run dev",
+  "npm run build",
+  "npm test",
+  "cargo check",
+  "cargo clippy",
+  "cargo test",
+]
+
+# Still protect anything destructive
+require_approval_patterns = [
+  "rm -rf",
+  "git push --force",
+  "git reset --hard",
+]
+
+[filesystem]
+# In this project we are comfortable letting the agent touch docs/ and examples/
+# but we still protect secrets
+forbidden_paths = [
+  ".env",
+  "secrets/",
+  "*.pem",
+]

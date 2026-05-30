@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+target/
+dist/
+
+# Build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+*.msi
+*.appimage
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Secrets / Local config (never commit)
+.env
+.env.local
+config.local.toml
+*.pem
+*.key
+auth.json
+mcp_credentials.json
+
+# Conductor runtime state (user-specific)
+data/
+state/
+tasks/
+*.db
+*.sqlite
+
+# Temporary test projects
+tmp-*/
+test-projects/
+
+# Rust
+Cargo.lock
+
+# Misc
+*.bak
+*.tmp
