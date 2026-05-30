@@ -1,0 +1,25 @@
+[package]
+name = "grokpit-core"
+version = "0.1.0"
+edition = "2021"
+authors = ["GROKPIT"]
+description = "GROKPIT core service — secure MCP + ACP bridge for driving local Grok Build agents from Grok Desktop"
+license = "Proprietary"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+axum = { version = "0.7", features = ["macros"] }
+tower-http = { version = "0.5", features = ["cors", "trace"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+clap = { version = "4.5", features = ["derive"] }
+
+[dev-dependencies]
+tempfile = "3"
+
+[[bin]]
+name = "grokpit"
+path = "src/main.rs"
